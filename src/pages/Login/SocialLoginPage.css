@@ -1,18 +1,22 @@
+/* 기본 스타일 */
 body {
   margin: 0;
   font-family: 'Paperlogy', sans-serif;
   background-color: white;
 }
 
+/* 전체 컨테이너 */
 .login-container {
   position: relative;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  padding: 40px 20px;
 }
 
+/* 로고 위치 (상단 좌측) */
 .logo {
   position: absolute;
   top: 20px;
@@ -22,6 +26,7 @@ body {
   color: #0f1e50;
 }
 
+/* 우측 상단 메뉴 */
 .top-menu {
   position: absolute;
   top: 20px;
@@ -41,6 +46,7 @@ body {
   text-decoration: underline;
 }
 
+/* 로그인 박스 */
 .login-box {
   display: flex;
   flex-direction: column;
@@ -55,11 +61,11 @@ body {
   font-weight: 600;
 }
 
+/* 소셜 로그인 버튼 공통 */
 .login-button {
   width: 479px;
   height: 70px;
   padding: 12px;
-  margin: 8px 0;
   font-size: 22px;
   font-weight: bold;
   border-radius: 8px;
@@ -67,24 +73,22 @@ body {
   cursor: pointer;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
-  flex-direction: row;      
-  justify-content: center;  
-  align-items: center;      
-  gap: 10px;                
-  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0;
 }
 
+/* 각 플랫폼별 색상 */
 .kakao {
   background-color: #fee500;
   color: #000;
 }
 
-
 .naver {
   background-color: #03c75a;
   color: #fff;
 }
-
 
 .google {
   background-color: #fff;
@@ -92,20 +96,83 @@ body {
   border: 1px solid #ddd;
 }
 
-.social-logo {
-  height: 100px; 
-  object-fit: contain;
-}
+/* 구글 로그인 이미지 스타일 */
 .google-img-button {
   all: unset; /* 버튼 기본 스타일 제거 */
   cursor: pointer;
 }
 
 .google-img-button img {
-  width: 100%;      /* 버튼 크기에 맞춤 */
-  max-width: 479px; /* 원하는 최대 너비 조절 */
+  width: 100%;
+  max-width: 479px;
   height: auto;
   display: block;
   border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* FAQ 섹션 */
+.faq-container {
+  padding: 30px 40px;
+  background-color: #f8f8f8;
+  border-radius: 0;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  text-align: left;
+}
+
+
+.faq-container h3 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #0f1e50;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 10px;
+}
+
+/* 개별 FAQ 항목 */
+.faq-item {
+  border-top: 1px solid #ccc;
+  padding: 15px 0;
+}
+
+.faq-question {
+  font-size: 26px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: color 0.2s ease;
+}
+
+.faq-question:hover {
+  color: #0f1e50;
+}
+
+.faq-answer {
+  margin-top: 10px;
+  color: #555;
+  font-size: 22px;
+  line-height: 1.6;
+  padding-left: 5px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.arrow {
+  font-size: 14px;
+  color: #888;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
