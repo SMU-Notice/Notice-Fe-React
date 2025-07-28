@@ -92,8 +92,7 @@ const SocialLoginPage = ({ onKakaoLogin, onNaverLogin, onGoogleLogin }) => {
           </button>
         </div>
       </div>
-
-      {/* FAQ는 login-container 밖에 배치 */}
+      
       <div className="faq-container">
         <h3 className="faq-title">자주 묻는 질문</h3>
         {faqData.map((item, index) => (

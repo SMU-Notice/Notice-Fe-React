@@ -114,56 +114,57 @@ body {
 /* FAQ 섹션 */
 .faq-container {
   padding: 30px 40px;
-  background-color: #f8f8f8;
+  background-color: transparent;
   border-radius: 0;
   width: 100%;
   box-sizing: border-box;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   text-align: left;
 }
-
 
 .faq-container h3 {
   font-size: 20px;
   font-weight: bold;
-  color: #0f1e50;
+  color: #000;
   margin-bottom: 20px;
   border-bottom: 2px solid #ddd;
   padding-bottom: 10px;
 }
 
-/* 개별 FAQ 항목 */
 .faq-item {
-  border-top: 1px solid #ccc;
-  padding: 15px 0;
+  margin-bottom: 10px;
+  background-color: #f1f2f7;
+  border-radius: 4px;
+  overflow: hidden;
+  transition: background-color 0.2s ease;
+}
+
+/* ✅ 마우스를 질문/답변 어디에 올려도 전체 박스 색상 변화 */
+.faq-item:hover {
+  background-color: #e5e7ef;
 }
 
 .faq-question {
-  font-size: 26px;
+  font-size: 20px;
+  color: #0f1e50;
   font-weight: bold;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: color 0.2s ease;
-}
-
-.faq-question:hover {
-  color: #0f1e50;
+  padding: 16px 20px;
 }
 
 .faq-answer {
-  margin-top: 10px;
-  color: #555;
-  font-size: 22px;
+  padding: 0 20px 16px 20px;
+  color: #000;
+  font-size: 18px;
   line-height: 1.6;
-  padding-left: 5px;
   animation: fadeIn 0.3s ease-in-out;
 }
 
 .arrow {
-  font-size: 14px;
-  color: #888;
+  font-size: 16px;
+  color: #000;
 }
 
 @keyframes fadeIn {
