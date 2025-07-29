@@ -80,7 +80,14 @@ const Board = () => {
           <BookMarkIcon isBookmarked = {notice.isBookmarked} postId={notice.postId}/>
         </DateAndViews>
         <SubLine />
-        <NoticeContent>{notice.contentSummary}</NoticeContent>
+        <NoticeContent>
+        {notice.contentSummary.split('\n').map((line, index) => (
+          <React.Fragment key={index}>
+          {line}
+          <br />
+          </React.Fragment>
+        ))}
+        </NoticeContent>
         <NoticeOrigin href={notice.url} target="_blank" rel="noopener noreferrer">
           ▶ 원문
         </NoticeOrigin>
