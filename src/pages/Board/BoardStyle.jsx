@@ -68,8 +68,15 @@ const ViewIcon = styled.img`
 const NoticeContent = styled.p`
   font-size: 1rem;
   margin-top: 1rem;
-  height: 200px;
-  overflow-y: auto;
+  margin-bottom: 1rem;
+  min-height: 100px;
+  white-space: pre-line;
+`;
+
+const NoticePicture = styled.p`
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  white-space: pre-line;
 `;
 
 const NoticeOrigin = styled.a`
@@ -113,4 +120,4 @@ const NextNoticeTitle = styled.div`
 `
 
 
-export {Container, Title, VerticalDivider, Site, Line, SubLine, NoticeContainer, NoticeTitle, DateAndViews, CalendarIcon, ViewIcon, NoticeContent, NoticeOrigin, NextNotice, BeforeNotice, NextNoticeTitle, BeforeNoticeTitle};
+export {Container, Title, VerticalDivider, Site, Line, SubLine, NoticeContainer, NoticeTitle, DateAndViews, CalendarIcon, ViewIcon, NoticeContent, NoticePicture, NoticeOrigin, NextNotice, BeforeNotice, NextNoticeTitle, BeforeNoticeTitle};
