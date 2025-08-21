@@ -22,7 +22,11 @@ const PageButton = styled.button`
   }
 `;
 
-const Pagination = ({ page, setPage, pageGroup, setPageGroup, pagesPerGroup }) => {
+const Pagination = ({ page, setPage, pageGroup, setPageGroup, pagesPerGroup, totalPages }) => {
+  const startPage = pageGroup * pagesPerGroup + 1;
+  const endPage = Math.min(startPage + pagesPerGroup - 1, totalPages);
+  const pageNumbers = Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
+
   return (
     <PaginationWrapper>
       {/* 이전 그룹 이동 */}
@@ -32,6 +36,7 @@ const Pagination = ({ page, setPage, pageGroup, setPageGroup, pagesPerGroup }) =
           setPageGroup(prev => {
             const newGroup = prev - 1;
             setPage(newGroup * pagesPerGroup + 1);
+            window.scrollTo(0, 0);
             return newGroup;
           });
         }}
@@ -40,25 +45,27 @@ const Pagination = ({ page, setPage, pageGroup, setPageGroup, pagesPerGroup }) =
       </PageButton>
 
       {/* 숫자 버튼 */}
-      {Array.from({ length: pagesPerGroup }, (_, i) => {
-        const pageNumber = pageGroup * pagesPerGroup + i + 1;
-        return (
-          <PageButton
-            key={pageNumber}
-            active={page === pageNumber}
-            onClick={() => setPage(pageNumber)}
-          >
-            {pageNumber}
-          </PageButton>
-        );
-      })}
+      {pageNumbers.map((pageNumber) => (
+        <PageButton
+          key={pageNumber}
+          active={page === pageNumber}
+          onClick={() => {
+            setPage(pageNumber);
+            window.scrollTo(0, 0);
+          }}
+        >
+          {pageNumber}
+        </PageButton>
+      ))}
 
       {/* 다음 그룹 이동 */}
       <PageButton
+        disabled={endPage === totalPages}
         onClick={() => {
           setPageGroup(prev => {
             const newGroup = prev + 1;
             setPage(newGroup * pagesPerGroup + 1);
+            window.scrollTo(0, 0);
             return newGroup;
           });
         }}

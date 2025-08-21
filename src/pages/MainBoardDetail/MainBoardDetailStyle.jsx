@@ -1,6 +1,18 @@
 import styled from 'styled-components';
 import BookMarkIcon from '../../assets/bookmark.svg?react';
 
+const noticeColors = {
+  "통합공지": "#09144D", // 네이비
+  "컴퓨터과학과": "#91CE44", // 블루그린
+  "학술정보관": "#00A2E5", // 인디고
+  "대학일자리센터": "#393a96", // 퍼플
+  "SW중심대학사업단": "#B51385", // 오렌지
+  "International Student": "#EE334E", // 다크그린
+  "학생생활관": "#F9A13A", // 버건디
+  "대학원": "#FFDF1C", // 포레스트그린
+  "공학교육인증센터": "#009688", // 틸
+};
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -105,39 +117,18 @@ const NoticeItem = styled.div`
 const Site = styled.span`
   display: inline-flex;
   justify-content: center;
-  align-items: center; 
+  align-items: center;
   font-size: 9px;
   font-weight: bold;
   margin-right: 10px;
   margin-left: 5px;
   min-width: 25px;
-  width: ${(props) => (props.first ? "25px" : "25px")};
-  height: ${(props) => (props.first ? "25px" : "25px")};
+  width: 25px;
+  height: 25px;
   color: white;
   border-radius: 50%;
   text-align: center;
-  background-color: ${(props) => {
-  switch (props.noticeType) {
-    case "통합공지":
-      return "#09144D"; // 네이비
-    case "컴퓨터과학과":
-      return "#91CE44"; // 블루그린
-    case "학술정보관":
-      return "#00A2E5"; // 인디고
-    case "대학일자리센터":
-      return "#393a96"; // 퍼플
-    case "SW중심대학사업단":
-      return "#B51385"; // 오렌지
-    case "International Student":
-      return "#EE334E"; // 다크그린
-    case "학생생활관":
-      return "#F9A13A"; // 버건디
-    case "대학원":
-      return "#FFDF1C"; // 포레스트그린
-    case "공학교육인증센터":
-      return "#009688"; // 틸
-  }
-}}; 
+  background-color: ${({ noticeType }) => noticeColors[noticeType] ?? "#666"};
 `;
 
 const NoticeText = styled.div`
