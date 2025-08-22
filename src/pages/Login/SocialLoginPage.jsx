@@ -77,6 +77,16 @@ const SocialLoginPage = ({ onKakaoLogin, onNaverLogin, onGoogleLogin }) => {
           </div>
         ))}
       </div>
+      <div>
+      {/* 팝업 열기 버튼 */}
+      <button onClick={() => setOpen(true)}>시위 일정 보기</button>
+
+      {/* 팝업 컴포넌트 */}
+      <TrafficPopup 
+        open={open} 
+        onClose={() => setOpen(false)} 
+      />
+    </div>
     </>
   );
 };
