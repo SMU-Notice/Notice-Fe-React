@@ -12,7 +12,7 @@ import {
   NoticeTitleWrapper, NoticeTitleText, CalendarIcon, ViewIcon, SearchIcon as SearchIconImg, PostedTodayIcon, StyledBookMarkIcon
 } from "./MainBoardDetailStyle";
 
-const tabs = ['전체', '통합공지', '컴퓨터과학과', '학술정보관', '대학일자리센터', 'SW중심대학사업단', 'International Student', '학생생활관', '대학원', '공학교육인증센터'];
+const tabs = ['전체', '통합공지', '학과', '학술정보관', '대학일자리센터', 'SW중심대학사업단', 'International Student', '학생생활관', '대학원', '공학교육인증센터'];
 
 const siteNameMap = {
   '통합공지': '통합',
@@ -55,6 +55,7 @@ const MainBoardDetail = () => {
   const [pageGroup, setPageGroup] = useState(0);
   const pagesPerGroup = 10;
   const itemsPerPage = 7;
+  const [totalPages, setTotalPages] = useState(0);
 
   const token =
     localStorage.getItem("kakaoToken") ||
@@ -78,7 +79,8 @@ const MainBoardDetail = () => {
       });
 
       if (res.data.success) {
-        setNotices(res.data.data);
+        setNotices(res.data.data.posts);
+        setTotalPages(res.data.data.totalPages);
       } else {
         console.error("데이터 응답 오류:", res.data.error);
       }
@@ -181,7 +183,7 @@ const MainBoardDetail = () => {
             notices.map((notice, index) => (
               <NoticeItem key={notice.id} onClick={() => goToBoard(notice.id)}>
                 <Site noticeType={notice.boardName}>
-                  {siteNameMap[notice.site ?? notice.boardName] ?? notice.boardName}
+                  {siteNameMap[notice.site ?? notice.boardName] ?? "학과"}
                 </Site>
                 <NoticeText>
                   <NoticeTitleWrapper>
@@ -206,6 +208,7 @@ const MainBoardDetail = () => {
         pageGroup={pageGroup}
         setPageGroup={setPageGroup}
         pagesPerGroup={pagesPerGroup}
+        totalPages={totalPages}
       />
       </Content>
     </Container>
