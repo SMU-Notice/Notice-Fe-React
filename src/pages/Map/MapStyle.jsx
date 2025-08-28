@@ -105,7 +105,7 @@ const ExpandedTitle = styled.div`
   line-height: 1.35;
 
   a {
-    color: #2563eb;
+    color:rgb(23, 60, 140);
     text-decoration: underline;
   }
 `;
