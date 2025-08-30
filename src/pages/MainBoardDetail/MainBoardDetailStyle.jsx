@@ -4,13 +4,15 @@ import BookMarkIcon from '../../assets/bookmark.svg?react';
 const noticeColors = {
   "통합공지": "#09144D", // 네이비
   "컴퓨터과학과": "#91CE44", // 블루그린
-  "학술정보관": "#00A2E5", // 인디고
-  "대학일자리센터": "#393a96", // 퍼플
-  "SW중심대학사업단": "#B51385", // 오렌지
-  "International Student": "#EE334E", // 다크그린
-  "학생생활관": "#F9A13A", // 버건디
-  "대학원": "#FFDF1C", // 포레스트그린
-  "공학교육인증센터": "#009688", // 틸
+  "학술정보관 교육공지": "#00A2E5",
+  "학술정보관 공지사항": "#00A2E5", // 인디고
+  "대학일자리플러스센터 프로그램": "#393a96", // 퍼플
+  "SW중심대학사업단 공지사항": "#B51385", // 오렌지
+  "대외협력처 공지사항": "#EE334E", // 다크그린
+  "상명행복생활관 공지사항": "#F9A13A",
+  "스뮤하우스 공지사항": "#F9A13A", // 버건디
+  "일반대학원 통합대내공지'": "#FFDF1C", // 포레스트그린
+  "공학교육혁신센터 공지사항": "#009688", // 틸
 };
 
 const Container = styled.div`
@@ -48,7 +50,7 @@ const Tab = styled.button`
   //border-radius: 6px;
   border: 1px solid #e4e6df;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 13.7px;
 `;
 
 const FilterRow = styled.div`
