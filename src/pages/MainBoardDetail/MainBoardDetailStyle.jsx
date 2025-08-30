@@ -192,6 +192,7 @@ const StyledBookMarkIcon = styled(BookMarkIcon)`
   height: 11px;
   margin-right: 2px;
   margin-left: 8px;
+  transform: translateY(1px);
 `;
 
 export{Container, Content, Title, Tabs, Tab, FilterRow, DateInput, SearchBox, SearchInput, Dropdown, Wrap, Line, NoticeList, NoticeItem, Site, NoticeText, DateAndViews, NoticeTitleWrapper, NoticeTitleText, CalendarIcon, ViewIcon, SearchIcon, PostedTodayIcon, StyledBookMarkIcon};
