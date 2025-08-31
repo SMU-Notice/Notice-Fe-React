@@ -20,11 +20,23 @@ import {
 } from '../../constants/MainBoardDetail';
 import { useNotices } from '../../hooks/useNotices';
 
+import {
+  CS_GROUP_VALUE,
+  CS_GROUP_LABEL,
+  mapCsParamToSubType,
+} from '../../constants/MainBoardDetail';
+import { deriveDeptTag, labelizeBoard } from '../../utils/boardText';
+import { useDepartmentPriority } from '../../hooks/useDepartmentPriority';
+import {
+  useDropdownOptions,
+  useEffectiveBoardNames,
+  useAutoSelectTopOptionOnce,
+} from '../../hooks/useDropdownLogic';
+
 const MainBoardDetail = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // URL → 상태 초기화
   const [activeTab, setActiveTab] = useState(searchParams.get('tab') || '전체');
   const [search, setSearch] = useState(searchParams.get('search') || '');
   const [submittedSearch, setSubmittedSearch] = useState(searchParams.get('search') || '');
@@ -33,49 +45,56 @@ const MainBoardDetail = () => {
   const [endDate, setEndDate] = useState(searchParams.get('endDate') || '2026-02-28');
   const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
   const [selectedBoard, setSelectedBoard] = useState(searchParams.get('board') || '');
+  const [csSubType, setCsSubType] = useState(mapCsParamToSubType(searchParams.get('cs')));
 
   const [pageGroup, setPageGroup] = useState(0);
 
-  // 인증 토큰
   const token =
     localStorage.getItem('kakaoToken') ||
     localStorage.getItem('naverToken') ||
     localStorage.getItem('googleToken') ||
     '';
 
-  // 현재 탭에 대한 보드 배열(전체 탭은 null)
   const currentBoardNames = useMemo(() => {
     const v = TAB_TO_BOARD_NAME[activeTab];
     if (!v) return null;
     return Array.isArray(v) ? v : [v];
   }, [activeTab]);
 
-  // 실제로 사용할 보드 목록(사이트 선택 시 단일 보드만)
-  const effectiveBoardNames = useMemo(() => {
-    if (selectedBoard) return [selectedBoard];
-    return currentBoardNames;
-  }, [selectedBoard, currentBoardNames]);
+  // 사용자 학과 우선순위 (중복 제거)
+  const deptPriority = useDepartmentPriority(token);
 
-  // 현재 탭의 카테고리 선택지
+  // 드롭다운 옵션/선택/자동선택
+  const dropdownOptions = useDropdownOptions(activeTab, currentBoardNames, deptPriority);
+  const effectiveBoardNames = useEffectiveBoardNames(selectedBoard, csSubType, currentBoardNames);
+  const { resetAutoSelect } = useAutoSelectTopOptionOnce({
+    activeTab,
+    dropdownOptions,
+    deptPriority,
+    selectedBoard,
+    setSelectedBoard,
+  });
+
   const currentCategoryOptions = useMemo(
     () => CATEGORY_OPTIONS_MAP[activeTab] || [],
     [activeTab]
   );
 
-  // URL 쿼리 파라미터 구성(빈 값 제외)
   const urlParams = useMemo(() => {
     const params = new URLSearchParams();
     params.set('tab', activeTab);
     if (submittedSearch) params.set('search', submittedSearch);
     if (postType) params.set('postType', postType);
     if (selectedBoard) params.set('board', selectedBoard);
+    if (selectedBoard === CS_GROUP_VALUE) {
+      params.set('cs', csSubType === '수강신청' ? 'enroll' : 'notice');
+    }
     if (startDate) params.set('startDate', startDate);
     if (endDate) params.set('endDate', endDate);
     params.set('page', String(page));
     return params;
-  }, [activeTab, submittedSearch, postType, selectedBoard, startDate, endDate, page]);
+  }, [activeTab, submittedSearch, postType, selectedBoard, csSubType, startDate, endDate, page]);
 
-  // 공지 데이터 조회(단일/다중 보드 통합)
   const { notices, totalPages, loading, errorMsg } = useNotices({
     page,
     setPage,
@@ -87,46 +106,53 @@ const MainBoardDetail = () => {
     token,
   });
 
-  // URL 동기화 및 데이터 조회 트리거
   useEffect(() => {
     setSearchParams(urlParams, { replace: true });
   }, [urlParams, setSearchParams]);
 
-  // 브라우저 뒤로/앞으로 이동 시 URL → 상태 동기화
   useEffect(() => {
     const spTab = searchParams.get('tab') || '전체';
     const spSearch = searchParams.get('search') || '';
     const spPostType = searchParams.get('postType') || '';
-    const spBoard = searchParams.get('board') || '';
+    const rawBoard = searchParams.get('board') || '';
+    const spCs = mapCsParamToSubType(searchParams.get('cs'));
     const spStart = searchParams.get('startDate') || '2024-03-01';
     const spEnd = searchParams.get('endDate') || '2026-02-28';
     const spPage = Number(searchParams.get('page')) || 1;
+
+    let spBoard = rawBoard;
+    // CS 보드가 직접 들어오면 그룹으로 정규화
+    if (spBoard === '컴퓨터과학전공 공지사항' || spBoard === '컴퓨터과학전공 수강신청') {
+      spBoard = CS_GROUP_VALUE;
+    }
 
     if (activeTab !== spTab) setActiveTab(spTab);
     if (search !== spSearch) setSearch(spSearch);
     if (submittedSearch !== spSearch) setSubmittedSearch(spSearch);
     if (postType !== spPostType) setPostType(spPostType);
     if (selectedBoard !== spBoard) setSelectedBoard(spBoard);
+    if (csSubType !== spCs) setCsSubType(spCs);
     if (startDate !== spStart) setStartDate(spStart);
     if (endDate !== spEnd) setEndDate(spEnd);
     if (page !== spPage) setPage(spPage);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
+  }, [searchParams]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // 페이지 그룹 동기화
   useEffect(() => {
     const newGroup = Math.floor((page - 1) / PAGES_PER_GROUP);
     setPageGroup(newGroup);
   }, [page]);
 
-  // 검색 제출
+  useEffect(() => {
+    if (activeTab !== '학부(과)/전공') return;
+    // 자동 선택은 useAutoSelectTopOptionOnce 훅 내부에서 수행됨
+  }, [activeTab]);
+
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     setPage(1);
     setSubmittedSearch(search.trim());
   };
 
-  // 상세 페이지 이동
   const goToBoard = useCallback((id) => navigate(`/board/${id}`), [navigate]);
 
   return (
@@ -143,7 +169,9 @@ const MainBoardDetail = () => {
                 setActiveTab(tab);
                 setPostType('');
                 setSelectedBoard('');
+                setCsSubType('공지사항');
                 setPage(1);
+                resetAutoSelect();
               }}
             >
               {tab}
@@ -191,26 +219,40 @@ const MainBoardDetail = () => {
               </SearchBox>
             </form>
 
-            {/* 보드가 2개 이상인 탭에서만 사이트(보드) 드롭다운 표시 */}
             {currentBoardNames && currentBoardNames.length > 1 && (
-              <Dropdown
-                value={selectedBoard}
-                onChange={(e) => {
-                  setPage(1);
-                  setSelectedBoard(e.target.value);
-                }}
-                style={{ marginLeft: '8px' }}
-              >
-                <option value="">{activeTab} 전체</option>
-                {currentBoardNames.map((bn) => (
-                  <option key={bn} value={bn}>
-                    {bn}
-                  </option>
-                ))}
-              </Dropdown>
+              <>
+                <Dropdown
+                  value={selectedBoard}
+                  onChange={(e) => {
+                    setPage(1);
+                    setSelectedBoard(e.target.value);
+                  }}
+                  style={{ marginLeft: '8px' }}
+                >
+                  <option value="">{activeTab} 전체</option>
+                  {dropdownOptions.map((bn) => (
+                    <option key={bn} value={bn}>
+                      {labelizeBoard(activeTab, bn, CS_GROUP_VALUE, CS_GROUP_LABEL)}
+                    </option>
+                  ))}
+                </Dropdown>
+
+                {activeTab === '학부(과)/전공' && selectedBoard === CS_GROUP_VALUE && (
+                  <Dropdown
+                    value={csSubType}
+                    onChange={(e) => {
+                      setPage(1);
+                      setCsSubType(e.target.value);
+                    }}
+                    style={{ marginLeft: '8px', width: '100px', flex: '0 0 100px', minWidth: 0 }}
+                  >
+                    <option value="공지사항">공지사항</option>
+                    <option value="수강신청">수강신청</option>
+                  </Dropdown>
+                )}
+              </>
             )}
 
-            {/* 카테고리(게시글 유형) 드롭다운 */}
             {currentCategoryOptions.length > 0 && (
               <Dropdown
                 value={postType}
@@ -247,7 +289,12 @@ const MainBoardDetail = () => {
               notices.map((notice, index) => {
                 const shortSite = SITE_NAME_MAP[notice.site ?? notice.boardName] ?? '학과';
                 const views = (notice.viewCount ?? 0).toLocaleString();
-                const postedToday = !!notice.isPostedToday; // 백엔드 필드만 사용
+                const postedToday = !!notice.isPostedToday;
+
+                const deptTag =
+                  activeTab === '학부(과)/전공'
+                    ? deriveDeptTag(notice.boardName ?? notice.site ?? '')
+                    : '';
 
                 return (
                   <NoticeItem
@@ -264,6 +311,7 @@ const MainBoardDetail = () => {
                       <NoticeTitleWrapper>
                         <NoticeTitleText first={index === 0} title={notice.title}>
                           {notice.postType ? `[${notice.postType}] ` : ''}
+                          {deptTag && `[${deptTag}] `}
                           {notice.title}
                         </NoticeTitleText>
                         {postedToday && (

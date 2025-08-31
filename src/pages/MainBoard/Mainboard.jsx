@@ -23,15 +23,17 @@ import viewIcon from "../../assets/viewIcon.svg";
 import postedTodayIcon from "../../assets/postedtodayicon.svg"
 
 const siteNameMap = {
-  '통합공지': '통합',
-  '컴퓨터과학과': '컴과',
-  '학술정보관': '학술',
-  '대학일자리센터': '일자리',
-  'SW중심대학사업단': 'SW',
-  'International Student': '국제',
-  '학생생활관': '학생',
-  '대학원': '대학원',
-  '공학교육인증센터': '공학'
+  통합공지: '메인',
+  '컴퓨터과학전공 공지사항': '컴과',
+  '학술정보관 교육공지': '학술',
+  '학술정보관 공지사항': '학술',
+  '대학일자리플러스센터 프로그램': '일자리',
+  'SW중심대학사업단 공지사항': 'SW',
+  '대외협력처 공지사항': '국제',
+  '상명행복생활관 공지사항': '기숙사',
+  '스뮤하우스 공지사항': '기숙사',
+  '일반대학원 통합대내공지': '대학원',
+  '공학교육혁신센터 공지사항': '공학',
 };
 
 const MainBoard = () => {
@@ -86,7 +88,7 @@ const MainBoard = () => {
       <NoticeList>
         {notices.map((notice) => (
           <NoticeItem key={notice.id} onClick={() => goToBoard(notice.id)}>
-            <Type noticeType={notice.boardName}>{siteNameMap[notice.boardName] || notice.boardName}</Type>
+            <Type noticeType={notice.boardName}>{siteNameMap[notice.boardName] ?? '학과'}</Type>
             <NoticeText>
             <NoticeTitleWrapper>
             <NoticeTitleText>
