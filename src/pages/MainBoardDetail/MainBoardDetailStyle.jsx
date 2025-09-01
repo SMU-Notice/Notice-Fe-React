@@ -181,8 +181,10 @@ const SearchIcon = styled.img`
 `
 
 const PostedTodayIcon = styled.img`
+  margin-left: 3px;
   width: 15px;
   height: 15px;
+  transform: translateY(-2px);
 `
 
 const StyledBookMarkIcon = styled(BookMarkIcon)`
