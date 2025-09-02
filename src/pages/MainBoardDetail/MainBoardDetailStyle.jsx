@@ -2,15 +2,16 @@ import styled from 'styled-components';
 import BookMarkIcon from '../../assets/bookmark.svg?react';
 
 const noticeColors = {
-  "통합공지": "#09144D", // 네이비
-  "컴퓨터과학과": "#91CE44", // 블루그린
-  "학술정보관": "#00A2E5", // 인디고
-  "대학일자리센터": "#393a96", // 퍼플
-  "SW중심대학사업단": "#B51385", // 오렌지
-  "International Student": "#EE334E", // 다크그린
-  "학생생활관": "#F9A13A", // 버건디
-  "대학원": "#FFDF1C", // 포레스트그린
-  "공학교육인증센터": "#009688", // 틸
+  "통합공지": "#09144D", 
+  "학술정보관 교육공지": "#00A2E5",
+  "학술정보관 공지사항": "#00A2E5",
+  "대학일자리플러스센터 프로그램": "#393a96", 
+  "SW중심대학사업단 공지사항": "#B51385", 
+  "대외협력처 공지사항": "#EE334E", 
+  "상명행복생활관 공지사항": "#FFD700",
+  "스뮤하우스 공지사항": "#FFD700", 
+  "일반대학원 통합대내공지": "	#FF8C00",
+  "공학교육혁신센터 공지사항": "#98FB98", 
 };
 
 const Container = styled.div`
@@ -48,7 +49,7 @@ const Tab = styled.button`
   //border-radius: 6px;
   border: 1px solid #e4e6df;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 12.5px;
 `;
 
 const FilterRow = styled.div`
@@ -75,7 +76,7 @@ const SearchInput = styled.input`
   padding: 0.5rem 2rem 0.5rem 0.5rem;
   border: 1px solid #e4e6df;
   border-radius: 4px;
-  width: 350px;
+  width: 300px;
   height: 39.5px;
 `;
 
@@ -128,7 +129,7 @@ const Site = styled.span`
   color: white;
   border-radius: 50%;
   text-align: center;
-  background-color: ${({ noticeType }) => noticeColors[noticeType] ?? "#666"};
+  background-color: ${({ noticeType }) => noticeColors[noticeType] ?? "	#4682B4"};
 `;
 
 const NoticeText = styled.div`
@@ -143,6 +144,7 @@ const DateAndViews = styled.div`
 const NoticeTitleWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
+  align-items: center;
 `;
 
 const NoticeTitleText = styled.div`
@@ -180,8 +182,9 @@ const SearchIcon = styled.img`
 
 const PostedTodayIcon = styled.img`
   margin-left: 3px;
-  width: 12px;
-  height: 12px;
+  width: 15px;
+  height: 15px;
+  transform: translateY(-2px);
 `
 
 const StyledBookMarkIcon = styled(BookMarkIcon)`
@@ -190,6 +193,7 @@ const StyledBookMarkIcon = styled(BookMarkIcon)`
   height: 11px;
   margin-right: 2px;
   margin-left: 8px;
+  transform: translateY(1px);
 `;
 
 export{Container, Content, Title, Tabs, Tab, FilterRow, DateInput, SearchBox, SearchInput, Dropdown, Wrap, Line, NoticeList, NoticeItem, Site, NoticeText, DateAndViews, NoticeTitleWrapper, NoticeTitleText, CalendarIcon, ViewIcon, SearchIcon, PostedTodayIcon, StyledBookMarkIcon};
