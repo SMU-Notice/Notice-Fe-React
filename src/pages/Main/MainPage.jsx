@@ -4,13 +4,15 @@ import MainBoard from '../MainBoard/MainBoard';
 import Map from '../Map/Map';
 import FAQAccordion from '../../components/FAQaccordion/FAQaccordion';
 import YouTubeCarousel from '../../components/YouTubeCarousel/YouTubeCarousel';
-
-
+import TrafficPopup from "../../components/TrafficPopup/TrafficPopup";
+import React, { useState, useEffect } from "react";
 
 
 const MainPage = () => {
+  const [open, setOpen] = useState(true);
   return(
     <>
+    <TrafficPopup open={open} onClose={() => setOpen(false)}/>
     <Main 
     buttonText="메일받기"
     navigateTo="/MyPageEmailManage"
