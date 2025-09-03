@@ -30,7 +30,7 @@ const NavButton = styled.button`
 
 const NavibarTitle = styled.div`
   font-weight: bold;
-  font-size: 28px;
+  font-size: 35px;
   font-family: 'Nunito', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `
 
