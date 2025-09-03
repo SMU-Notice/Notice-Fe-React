@@ -17,6 +17,7 @@ const Title = styled.h1`
   margin-top: 25px;
   text-align: center;
   color: #09144D;
+  font-family: 'Cafe24Ssurround', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `;
 
 const NoticeList = styled.div`
@@ -57,6 +58,7 @@ const Rank = styled.span`
   color: white;
   border-radius: 50%;
   text-align: center;
+  font-family: 'Cafe24Ssurround', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `;
 
 const NoticeText = styled.div`

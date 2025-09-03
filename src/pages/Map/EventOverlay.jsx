@@ -45,6 +45,7 @@ const Badge = styled.span`
   color: #fff;
   font-weight: 700;
   font-size: 11px;
+  font-family: 'Cafe24Ssurround', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `;
 
 const OverlayTitle = styled.div`
@@ -59,12 +60,14 @@ const OverlayTitle = styled.div`
     color: #1f3a93;
     text-decoration: underline;
   }
+  font-family: 'Paperlogy', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `;
 
 const OverlayPlace = styled.div`
   font-size: 12px;
   color: #4b5563;
   margin-bottom: 2px;
+  font-family: 'Paperlogy', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `;
 
 const OverlayDate = styled.div`

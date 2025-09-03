@@ -20,6 +20,7 @@ const PageButton = styled.button`
     cursor: not-allowed;
     opacity: 0.5;
   }
+  font-family: 'Paperlogy', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `;
 
 const Pagination = ({ page, setPage, pageGroup, setPageGroup, pagesPerGroup, totalPages }) => {

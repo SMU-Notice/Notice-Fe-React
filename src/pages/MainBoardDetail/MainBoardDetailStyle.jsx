@@ -27,6 +27,7 @@ const Title = styled.h1`
   margin-top: 25px;
   text-align: center;
   color: #09144D;
+  font-family: 'Cafe24Ssurround', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `;
 
 const Content = styled.div`
@@ -49,7 +50,8 @@ const Tab = styled.button`
   //border-radius: 6px;
   border: 1px solid #e4e6df;
   cursor: pointer;
-  font-size: 12.5px;
+  font-size: 12.7px;
+  font-family: 'Paperlogy', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `;
 
 const FilterRow = styled.div`
@@ -65,6 +67,7 @@ const DateInput = styled.input`
   margin-right: 5px;
   border-radius: 4px;
   border: 1px solid #e4e6df;
+  font-family: 'Paperlogy', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `;
 
 const SearchBox = styled.div`
@@ -78,6 +81,7 @@ const SearchInput = styled.input`
   border-radius: 4px;
   width: 300px;
   height: 39.5px;
+  font-family: 'Paperlogy', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `;
 
 const Dropdown = styled.select`
@@ -85,6 +89,7 @@ const Dropdown = styled.select`
   border-radius: 4px;
   border: 1px solid #e4e6df;
   width: 150px;
+  font-family: 'Paperlogy', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `;
 
 const Wrap = styled.div`
@@ -119,7 +124,7 @@ const Site = styled.span`
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  font-size: 9px;
+  font-size: 8.5px;
   font-weight: bold;
   margin-right: 10px;
   margin-left: 5px;
@@ -130,6 +135,7 @@ const Site = styled.span`
   border-radius: 50%;
   text-align: center;
   background-color: ${({ noticeType }) => noticeColors[noticeType] ?? "	#4682B4"};
+  font-family: 'Cafe24Ssurround', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `;
 
 const NoticeText = styled.div`

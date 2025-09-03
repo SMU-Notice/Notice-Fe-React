@@ -12,6 +12,7 @@ const Navibar = styled.div`
   color: white;
   z-index: 1;
   height: 10vh;
+  font-family: 'Cafe24Ssurround', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `;
 
 const NavButton = styled.button`
@@ -25,6 +26,7 @@ const NavButton = styled.button`
     text-decoration: underline;
     font-size: 14px;
   }
+  font-family: 'Cafe24Ssurround', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `;
 
 const NavibarTitle = styled.div`
@@ -36,6 +38,7 @@ const SmuIcon = styled.img`
   width: 24px;
   height: 24px;
   margin-right: 8px;
+  transform: translateY(4px);
 `
 
 

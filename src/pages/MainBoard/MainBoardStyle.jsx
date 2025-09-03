@@ -40,6 +40,7 @@ const Title = styled.h1`
   color: #09144D;
   flex: 1;
   text-align: center;
+  font-family: 'Cafe24Ssurround', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `;
 
 const MoreButton = styled.button`
@@ -55,6 +56,7 @@ const MoreButton = styled.button`
   height: 30px;
   width: 50px;
   white-space: nowrap;
+  font-family: 'Cafe24Ssurround', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `;
 
 
@@ -97,6 +99,7 @@ const Type = styled.span`
   border-radius: 50%;
   text-align: center;
   background-color: ${({ noticeType }) => noticeColors[noticeType] ?? "	#4682B4"};
+  font-family: 'Cafe24Ssurround', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `;
 
 

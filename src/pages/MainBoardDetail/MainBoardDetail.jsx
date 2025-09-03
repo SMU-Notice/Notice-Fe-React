@@ -180,7 +180,7 @@ const MainBoardDetail = () => {
         </Tabs>
 
         <FilterRow>
-          <label>
+          <label style={{ fontFamily: "Paperlogy, 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif" }}>
             게시 날짜 설정
             <DateInput
               type="date"

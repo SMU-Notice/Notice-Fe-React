@@ -1,17 +1,26 @@
 import React, { useEffect, useRef, useState } from "react";
 import {Section, CarouselViewport, Track, Card, Thumb} from "./YouTubeCarouselStyle"
 
+
+
 export default function YouTubeCarousel() {
-  const items = [
-    { url: "https://www.youtube.com/watch?v=xxxxxxx1", thumb: "https://i.ytimg.com/vi/xxxxxxx1/hqdefault.jpg" },
-    { url: "https://www.youtube.com/watch?v=xxxxxxx2", thumb: "https://i.ytimg.com/vi/xxxxxxx2/hqdefault.jpg" },
-    { url: "https://www.youtube.com/watch?v=xxxxxxx3", thumb: "https://i.ytimg.com/vi/xxxxxxx3/hqdefault.jpg" },
-    { url: "https://www.youtube.com/watch?v=xxxxxxx4", thumb: "https://i.ytimg.com/vi/xxxxxxx4/hqdefault.jpg" },
-    { url: "https://www.youtube.com/watch?v=xxxxxxx5", thumb: "https://i.ytimg.com/vi/xxxxxxx5/hqdefault.jpg" },
-    { url: "https://www.youtube.com/watch?v=xxxxxxx6", thumb: "https://i.ytimg.com/vi/xxxxxxx6/hqdefault.jpg" },
-    { url: "https://www.youtube.com/watch?v=xxxxxxx7", thumb: "https://i.ytimg.com/vi/xxxxxxx7/hqdefault.jpg" },
-    { url: "https://www.youtube.com/watch?v=xxxxxxx8", thumb: "https://i.ytimg.com/vi/xxxxxxx8/hqdefault.jpg" },
+
+  const thumbs = import.meta.glob('../../assets/yt/*.jpg', {
+    eager: true,
+    query: '?url',
+    import: 'default',
+  });
+
+  const ids = [
+    '유튜브1','유튜브2','유튜브3','유튜브4','유튜브5',
+    '유튜브6','유튜브7','유튜브8','유튜브9','유튜브10'
   ];
+
+  const items = ids.map((id) => ({
+    url: `https://www.youtube.com/watch?v=${id}`,
+    thumb: thumbs[`../../assets/yt/${id}.jpg`],
+  }));
+  
 
   // 무한 루프 위해 3배 복제
   const tripled = [...items, ...items, ...items];

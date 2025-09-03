@@ -5,6 +5,7 @@ const OverlayPlace = styled.div`
   font-size: 12px;
   color: #4b5563;
   margin-left: 12px;
+  font-family: 'Paperlogy', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `;
 
 const Wrapper = styled.div`
@@ -69,7 +70,8 @@ const Badge = styled.span`
   background: #111827;
   color: white;
   font-weight: 800;
-  font-size: 13px;
+  font-size: 15px;
+  font-family: 'Cafe24Ssurround', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `;
 
 const TitleText = styled.div`
@@ -81,6 +83,7 @@ const TitleText = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-family: 'Paperlogy', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `;
 
 const Expanded = styled.div`
@@ -89,6 +92,7 @@ const Expanded = styled.div`
   border: 1px solid #e5e7eb;
   border-radius: 10px;
   overflow: hidden;
+  font-family: 'Paperlogy', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `;
 
 const Photo = styled.img`

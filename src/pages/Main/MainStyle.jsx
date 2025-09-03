@@ -53,7 +53,8 @@ const StartButton = styled.button`
   cursor: pointer;
   &:hover {
     font-size: 1.6rem;
-  }  
+  }
+  font-family: 'Cafe24Ssurround', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `;
 
 const Navbar = styled.div`

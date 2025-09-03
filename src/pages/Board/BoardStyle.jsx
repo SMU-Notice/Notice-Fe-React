@@ -13,6 +13,7 @@ const Title = styled.h1`
   display: flex;
   align-items: center;
   gap: 1rem;
+  font-family: 'Cafe24Ssurround', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `;
 
 const VerticalDivider = styled.div`
@@ -23,6 +24,7 @@ const VerticalDivider = styled.div`
 const Site = styled.span`
   font-size: 1.4rem;
   color: gray;
+  font-family: 'Cafe24Ssurround', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `;
 
 const Line = styled.hr`

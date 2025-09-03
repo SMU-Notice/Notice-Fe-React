@@ -11,6 +11,7 @@ const H2 = styled.h2`
   font-size: 22px;
   font-weight: 800;
   margin: 0 0 14px;
+  font-family: 'Paperlogy', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `;
 
 const List = styled.div`
@@ -54,6 +55,7 @@ const QText = styled.span`
   font-size: 18px;
   font-weight: 600;
   color: #0b1441;
+  font-family: 'Paperlogy', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `;
 
 const Arrow = styled.span`
@@ -84,9 +86,10 @@ const AnswerWrap = styled.div`
 const Answer = styled.div`
   padding: 14px 18px 16px;
   font-size: 15px;
-  font-weight: 550;  
+  font-weight: 600;
   line-height: 1.6;
   color: #24324a;
+  font-family: 'Paperlogy', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `;
 
 export {Section, H2, List, Item, QuestionButton, QText, Arrow, AnswerWrap, Answer};
