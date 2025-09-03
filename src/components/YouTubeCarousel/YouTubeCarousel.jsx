@@ -12,8 +12,8 @@ export default function YouTubeCarousel() {
   });
 
   const ids = [
-    '유튜브1','유튜브2','유튜브3','유튜브4','유튜브5',
-    '유튜브6','유튜브7','유튜브8','유튜브9','유튜브10'
+    'MbUp6C6d07M','umdE4TXwaXI','RqU8088vZtY','YO47Ka9hp14','aECKyikL5Uc',
+    'U7MixrHHNJ0','HEFGaK9-QRc','HHtVHbJ5tBI','BigNdiCK5PY','B2iBcHyG3U8'
   ];
 
   const items = ids.map((id) => ({
