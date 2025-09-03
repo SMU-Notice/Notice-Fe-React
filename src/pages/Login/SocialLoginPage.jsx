@@ -3,7 +3,6 @@ import "./SocialLoginPage.css";
 import googleLoginImg from "../../assets/googlelogin.svg";
 import naverLoginImg from "../../assets/naverlogin.png";
 import kakaoLoginImg from "../../assets/kakao_login_large_wide.png";
-import TrafficPopup from "../../components/TrafficPopup/TrafficPopup";
 
 const faqData = [
   { question: "어떻게 이용할 수 있나요?", answer: "소셜 계정으로 회원가입 및 로그인하시면 이용하실 수 있습니다. (카카오톡/네이버/구글)" },
@@ -64,15 +63,6 @@ const SocialLoginPage = ({ onKakaoLogin, onNaverLogin, onGoogleLogin }) => {
             )}
           </div>
         ))}
-      </div>
-
-      {/* 시위 일정 팝업 */}
-      <div>
-        <button type="button" onClick={() => setOpen(true)}>시위 일정 보기</button>
-        <TrafficPopup
-          open={open}
-          onClose={() => setOpen(false)}  // ✅ 닫기 동작
-        />
       </div>
     </>
   );
