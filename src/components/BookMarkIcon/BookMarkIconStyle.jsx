@@ -4,6 +4,7 @@ import BookMarkIcon from '../../assets/bookmark.svg?react';
 const BookmarkWrapper = styled.div`
   position: relative;
   display: inline-block;
+  transform: translateY(3px);
 `;
 
 const BookmarkButton = styled(BookMarkIcon)`

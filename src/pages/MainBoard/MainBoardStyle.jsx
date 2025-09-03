@@ -19,9 +19,9 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 30px;
-  margin-top: 30px;
+  margin-bottom: 60px;
   position: relative;
-  height: 100vh;
+  height: 80vh;
 `;
 
 const TitleWrapper = styled.div`
@@ -36,7 +36,7 @@ const Title = styled.h1`
   font-size: 35px;
   font-weight: bold;
   margin-top: 25px;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
   color: #09144D;
   flex: 1;
   text-align: center;
@@ -51,7 +51,7 @@ const MoreButton = styled.button`
   font-size: 14px;
   cursor: pointer;
   border-radius: 20%;
-  margin-top: 10px;
+  margin-top: 20px;
   margin-left: 30px;
   height: 30px;
   width: 50px;
@@ -132,6 +132,7 @@ const CalendarIcon = styled.img`
   height: 11px;
   margin-right: 2px;
   margin-left: 2px;
+  transform: translateY(0.8px);
 `
 
 const ViewIcon = styled.img`
@@ -139,6 +140,15 @@ const ViewIcon = styled.img`
   height: 11px;
   margin-right: 2px;
   margin-left: 8px;
+  transform: translateY(1.3px);
+`
+
+const ReferenceIcon = styled.img`
+  width: 11px;
+  height: 11px;
+  margin-right: 2px;
+  margin-left: 8px;
+  transform: translateY(1.3px);
 `
 
 const PostedTodayIcon = styled.img`
@@ -148,4 +158,4 @@ const PostedTodayIcon = styled.img`
   height: 12px;
 `
 
-export {Container, TitleWrapper, Title, MoreButton, NoticeList, NoticeItem, Type, NoticeText, DateAndViews, NoticeTitleWrapper, NoticeTitleText, CalendarIcon, ViewIcon, PostedTodayIcon};
+export {Container, TitleWrapper, Title, MoreButton, NoticeList, NoticeItem, Type, NoticeText, DateAndViews, NoticeTitleWrapper, NoticeTitleText, CalendarIcon, ViewIcon, PostedTodayIcon, ReferenceIcon};

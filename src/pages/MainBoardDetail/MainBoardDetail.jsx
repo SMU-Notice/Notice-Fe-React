@@ -4,10 +4,11 @@ import calendarIcon from '../../assets/calendar.svg';
 import viewIcon from '../../assets/viewIcon.svg';
 import searchIcon from '../../assets/search.svg';
 import postedTodayIcon from '../../assets/postedtodayicon.svg';
+import referenceIcon from '../../assets/ReferenceIcon.svg'
 import Pagination from './Pagination';
 import {
   Container, Title, Content, Tabs, Tab, FilterRow, DateInput, SearchBox, SearchInput,
-  Dropdown, Wrap, Line, NoticeList, NoticeItem, Site, NoticeText, DateAndViews,
+  Dropdown, Wrap, Line, NoticeList, NoticeItem, Site, NoticeText, DateAndViews, ReferenceIcon,
   NoticeTitleWrapper, NoticeTitleText, CalendarIcon, ViewIcon, SearchIcon as SearchIconImg, PostedTodayIcon, StyledBookMarkIcon
 } from './MainBoardDetailStyle';
 
@@ -325,6 +326,7 @@ const MainBoardDetail = () => {
                         <ViewIcon src={viewIcon} alt="view" />
                         {views}
                         <StyledBookMarkIcon isBookmarked={!!notice.isBookmarked} />
+                        {!!notice.hasReference && <ReferenceIcon src={referenceIcon} alt="reference" />}
                       </DateAndViews>
                     </NoticeText>
                   </NoticeItem>

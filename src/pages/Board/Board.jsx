@@ -20,11 +20,13 @@ import {
   NextNotice,
   NextNoticeTitle,
   BeforeNotice,
-  BeforeNoticeTitle
+  BeforeNoticeTitle,
+  ReferenceIcon
 } from "./BoardStyle";
 import BookMarkIcon from '../../components/BookMarkIcon/BookMarkIcon';
 import calendarIcon from "../../assets/calendar.svg";
 import viewIcon from "../../assets/viewIcon.svg";
+import referenceIcon from '../../assets/ReferenceIcon.svg'
 
 const Board = () => {
   const [notice, setNotice] = useState(null);
@@ -79,6 +81,7 @@ const Board = () => {
           <CalendarIcon src={calendarIcon} alt="calendar" />{notice.postedDate}
           <ViewIcon src={viewIcon} alt="view" />{notice.viewCount}
           <BookMarkIcon isBookmarked = {notice.isBookmarked} postId={notice.postId}/>
+          {!!notice.hasReference && <ReferenceIcon src={referenceIcon} alt="reference" />}
         </DateAndViews>
         <SubLine />
         <NoticeContent>{notice.contentSummary}</NoticeContent>

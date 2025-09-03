@@ -4,10 +4,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 30px;
   padding: 20px;
+  margin-top: 50px;
   position: relative;
-  height: 100vh;
+  height: 80vh;
 `;
 
 const Title = styled.h1`
@@ -81,6 +81,7 @@ const CalendarIcon = styled.img`
   height: 11px;
   margin-right: 2px;
   margin-left: 2px;
+  transform: translateY(0.5px);
 `
 
 const ViewIcon = styled.img`
@@ -88,6 +89,7 @@ const ViewIcon = styled.img`
   height: 11px;
   margin-right: 2px;
   margin-left: 8px;
+  transform: translateY(1.3px);
 `
 
 export {Container, Title, NoticeList, NoticeItem, Rank, NoticeText, DateAndViews, NoticeTitle, CalendarIcon, ViewIcon};

@@ -154,7 +154,7 @@ const NoticeTitleWrapper = styled.div`
 `;
 
 const NoticeTitleText = styled.div`
-  font-size: ${(props) => (props.first ? "20px" : "15px")};
+  font-size: 15px;
   font-weight: ${(props) => (props.first ? "bold" : "")};
   margin-bottom: 3px;
   white-space: nowrap;
@@ -168,6 +168,7 @@ const CalendarIcon = styled.img`
   height: 11px;
   margin-right: 2px;
   margin-left: 2px;
+  transform: translateY(0.8px);
 `
 
 const ViewIcon = styled.img`
@@ -175,6 +176,15 @@ const ViewIcon = styled.img`
   height: 11px;
   margin-right: 2px;
   margin-left: 8px;
+  transform: translateY(1.3px);
+`
+
+const ReferenceIcon = styled.img`
+  width: 11px;
+  height: 11px;
+  margin-right: 2px;
+  margin-left: 8px;
+  transform: translateY(1.3px);
 `
 
 const SearchIcon = styled.img`
@@ -199,7 +209,7 @@ const StyledBookMarkIcon = styled(BookMarkIcon)`
   height: 11px;
   margin-right: 2px;
   margin-left: 8px;
-  transform: translateY(1px);
+  transform: translateY(1.5px);
 `;
 
-export{Container, Content, Title, Tabs, Tab, FilterRow, DateInput, SearchBox, SearchInput, Dropdown, Wrap, Line, NoticeList, NoticeItem, Site, NoticeText, DateAndViews, NoticeTitleWrapper, NoticeTitleText, CalendarIcon, ViewIcon, SearchIcon, PostedTodayIcon, StyledBookMarkIcon};
+export{Container, Content, Title, Tabs, Tab, FilterRow, DateInput, SearchBox, SearchInput, Dropdown, Wrap, Line, NoticeList, NoticeItem, Site, NoticeText, DateAndViews, NoticeTitleWrapper, NoticeTitleText, CalendarIcon, ViewIcon, SearchIcon, PostedTodayIcon, StyledBookMarkIcon, ReferenceIcon};

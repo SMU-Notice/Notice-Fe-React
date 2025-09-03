@@ -16,11 +16,13 @@ import {
   CalendarIcon,
   ViewIcon,
   PostedTodayIcon,
+  ReferenceIcon
 } from "./MainBoardStyle";
 
 import calendarIcon from "../../assets/calendar.svg";
 import viewIcon from "../../assets/viewIcon.svg";
 import postedTodayIcon from "../../assets/postedtodayicon.svg"
+import referenceIcon from '../../assets/ReferenceIcon.svg'
 
 const siteNameMap = {
   통합공지: '메인',
@@ -101,6 +103,7 @@ const MainBoard = () => {
                 {notice.postedDate}
                 <ViewIcon src={viewIcon} alt="viewIcon" />
                 {Number(notice.viewCount).toLocaleString()}
+                {!!notice.hasReference && <ReferenceIcon src={referenceIcon} alt="reference" />}
               </DateAndViews>
             </NoticeText>
           </NoticeItem>
