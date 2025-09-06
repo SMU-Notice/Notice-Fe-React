@@ -38,7 +38,7 @@ const SmuIcon = styled.img`
   width: 24px;
   height: 24px;
   margin-right: 8px;
-  transform: translateY(px);
+  transform: translateY(1px);
 `
 
 
