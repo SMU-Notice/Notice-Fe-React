@@ -1,83 +1,122 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import busIcon from "../../assets/bus.svg";
 import "./TrafficPopup.css";
 
-// 오늘 날짜 포맷 (YYYY-MM-DD (요일))
 function getTodayText() {
   const today = new Date();
   const year = today.getFullYear();
   const month = String(today.getMonth() + 1).padStart(2, "0");
   const date = String(today.getDate()).padStart(2, "0");
-
   const days = ["일", "월", "화", "수", "목", "금", "토"];
   const day = days[today.getDay()];
-
   return `${year}-${month}-${date} (${day})`;
+}
+
+function getAnySocialToken() {
+  const keys = ["kakaoToken", "naverToken", "googleToken"];
+  for (const k of keys) {
+    const v = localStorage.getItem(k);
+    if (v && v !== "null" && v !== "undefined") return v;
+  }
+  return null;
 }
 
 export default function TrafficPopup({
   open,
   onClose,
   dateText = getTodayText(),
-  caption = "오늘의 집회/시위",
+  caption = "오늘과 내일의 집회/시위",
 }) {
   const [loading, setLoading] = useState(false);
   const [events, setEvents] = useState([]);
   const [message, setMessage] = useState("");
 
-  // API 호출
+  const closeBtnRef = useRef(null);
+  const lastActiveElRef = useRef(null);
+
+  const API_BASE = useMemo(
+    () => import.meta.env?.VITE_API_BASE || "https://test.smu-notice.kr",
+    []
+  );
+
   useEffect(() => {
     if (!open) return;
+    lastActiveElRef.current = document.activeElement;
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    setTimeout(() => closeBtnRef.current && closeBtnRef.current.focus(), 0);
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      if (lastActiveElRef.current && lastActiveElRef.current.focus) {
+        lastActiveElRef.current.focus();
+      }
+    };
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => e.key === "Escape" && onClose && onClose();
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, onClose]);
+
+  useEffect(() => {
+    if (!open) return;
+    const controller = new AbortController();
+    const signal = controller.signal;
 
     const fetchEvents = async () => {
       try {
         setLoading(true);
+        setMessage("");
 
-        // localStorage에서 토큰 가져오기
-        const token =
-          localStorage.getItem("kakaoToken") ||
-          localStorage.getItem("naverToken") ||
-          localStorage.getItem("googleToken");
-
+        const token = getAnySocialToken();
         if (!token) {
-          setMessage("❌ 인증 토큰이 없습니다. 다시 로그인해주세요.");
           setEvents([]);
-          setLoading(false);
+          setMessage("❌ 인증 토큰이 없습니다. 다시 로그인해주세요.");
           return;
         }
 
-        // dateText에서 "YYYY-MM-DD"만 추출 (괄호 제외)
-        const queryDate = dateText.split(" ")[0];
+        const res = await fetch(`${API_BASE}/api/protest-events`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          mode: "cors",
+          signal,
+        });
 
-        // ✅ 풀 주소 + 토큰 헤더 추가
-        const res = await fetch(
-          `https://test.smu-notice.kr/api/protest-events?date=${queryDate}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            mode: "cors",
-            credentials: "include",
-          }
-        );
+        if (res.status === 401 || res.status === 403) {
+          setEvents([]);
+          setMessage("인증이 만료되었습니다. 다시 로그인해주세요. (401/403)");
+          return;
+        }
+        if (!res.ok) {
+          const txt = await res.text().catch(() => "");
+          throw new Error(`서버 오류 (${res.status}). ${txt.slice(0, 200)}`);
+        }
 
         const result = await res.json();
+        if (!result || result.success !== true) {
+          setEvents([]);
+          setMessage("서버 오류가 발생했습니다.");
+          return;
+        }
 
-        if (result.success) {
-          if (result.data.count > 0) {
-            setEvents(result.data.events);
-            setMessage("");
-          } else {
-            setEvents([]);
-            setMessage(result.data.message || "시위 일정이 없습니다.");
-          }
+        const todayEvents = result.data.today.events;
+        const tomorrowEvents = result.data.tomorrow.events;
+        const combined = todayEvents.concat(tomorrowEvents);
+
+        if (combined.length > 0) {
+          setEvents(combined);
+          setMessage("");
         } else {
           setEvents([]);
-          setMessage(result.error?.message || "서버 오류가 발생했습니다.");
+          setMessage("시위 일정이 없습니다.");
         }
       } catch (err) {
+        if (signal.aborted) return;
         setEvents([]);
         setMessage("네트워크 오류가 발생했습니다.");
       } finally {
@@ -86,15 +125,8 @@ export default function TrafficPopup({
     };
 
     fetchEvents();
-  }, [open, dateText]);
-
-  // ESC 닫기
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e) => e.key === "Escape" && onClose?.();
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open, onClose]);
+    return () => controller.abort();
+  }, [open, API_BASE]);
 
   if (!open) return null;
 
@@ -104,33 +136,29 @@ export default function TrafficPopup({
         className="pop-card"
         role="dialog"
         aria-modal="true"
-        aria-label="알림 팝업"
+        aria-labelledby="traffic-title"
+        aria-describedby="traffic-body"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* 닫기 버튼 */}
-        <button className="pop-close" onClick={onClose} aria-label="닫기">
+        <button className="pop-close" onClick={onClose} aria-label="닫기" ref={closeBtnRef}>
           ×
         </button>
-
-        {/* 버스 이미지 */}
         <img src={busIcon} alt="버스 아이콘" className="pop-bus" />
-
-        {/* 텍스트 */}
         <div className="pop-text">
-          <div className="pop-underline">{dateText}</div>
+          <div className="pop-underline" id="traffic-title">
+            {dateText}
+          </div>
           <div className="pop-underline">{caption}</div>
         </div>
-
-        {/* API 결과 */}
-        <div className="pop-content">
+        <div className="pop-content" id="traffic-body" aria-live="polite">
           {loading && <p>불러오는 중...</p>}
           {!loading && events.length > 0 && (
             <ul>
               {events.map((ev, idx) => (
-                <li key={idx}>
+                <li key={`${ev.location}-${ev.startTime}-${idx}`}>
                   <strong>{ev.location}</strong>
                   <div>
-                    {ev.startTime} ~ {ev.endTime}
+                    {ev.protestDate} · {ev.startTime} ~ {ev.endTime}
                   </div>
                 </li>
               ))}
