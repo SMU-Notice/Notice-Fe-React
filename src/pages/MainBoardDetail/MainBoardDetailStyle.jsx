@@ -155,7 +155,6 @@ const NoticeTitleWrapper = styled.div`
 
 const NoticeTitleText = styled.div`
   font-size: 15px;
-  font-weight: ${(props) => (props.first ? "bold" : "")};
   margin-bottom: 3px;
   white-space: nowrap;
   overflow: hidden;
