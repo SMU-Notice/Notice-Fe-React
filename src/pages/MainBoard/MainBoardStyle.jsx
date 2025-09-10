@@ -54,7 +54,7 @@ const MoreButton = styled.button`
   margin-top: 20px;
   margin-left: 30px;
   height: 30px;
-  width: 50px;
+  width: 60px;
   white-space: nowrap;
   font-family: 'Cafe24Ssurround', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `;

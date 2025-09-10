@@ -43,6 +43,8 @@ const PopularWeeklyBoard = () => {
       navigate(`/board/${id}`);
     };
 
+  const numberFmt = new Intl.NumberFormat('ko-KR');
+
   return (
     <Container>
       <Title>이달의 인기글</Title>
@@ -56,7 +58,7 @@ const PopularWeeklyBoard = () => {
               <CalendarIcon src={calendarIcon} alt="calendarIcon" />
               {notice.postedDate}
               <ViewIcon src={viewIcon} alt="viewIcon" />
-              {notice.viewCount}
+              {numberFmt.format(Number(notice.viewCount))}
         </DateAndViews>
       </NoticeText>
     </NoticeItem>

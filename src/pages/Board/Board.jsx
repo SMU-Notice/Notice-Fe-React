@@ -70,7 +70,7 @@ const Board = () => {
   return (
     <Container>
       <Title>
-        모든공지
+        모든 공지
         <VerticalDivider />
         <Site>{notice.name}</Site>
       </Title>
