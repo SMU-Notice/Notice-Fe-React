@@ -110,7 +110,14 @@ export default function TrafficPopup({
 
         if (combined.length > 0) {
           setEvents(combined);
-          setMessage("");
+          const msg = combined
+            .map(
+              (ev) =>
+                `${ev.protestDate} ${ev.startTime} ~ ${ev.endTime} | ${ev.location}`
+            )
+            .join("\n");
+
+          setMessage(msg);
         } else {
           setEvents([]);
           setMessage("시위 일정이 없습니다.");
@@ -131,7 +138,7 @@ export default function TrafficPopup({
   if (!open) return null;
 
   return (
-    <div className="pop-overlay" onClick={onClose} aria-hidden>
+    <div className="pop-overlay" onClick={onClose}>
       <div
         className="pop-card"
         role="dialog"

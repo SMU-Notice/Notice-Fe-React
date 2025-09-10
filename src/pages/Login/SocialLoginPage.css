@@ -1,11 +1,9 @@
-/* 기본 스타일 */
+
 body {
   margin: 0;
   font-family: 'Paperlogy', sans-serif;
   background-color: white;
 }
-
-/* 전체 컨테이너 */
 .login-container {
   position: relative;
   min-height: 100vh;
@@ -16,7 +14,6 @@ body {
   padding: 40px 20px;
 }
 
-/* 로고 위치 (상단 좌측) */
 .logo {
   position: absolute;
   top: 20px;
@@ -26,7 +23,6 @@ body {
   color: #0f1e50;
 }
 
-/* 우측 상단 메뉴 */
 .top-menu {
   position: absolute;
   top: 20px;
@@ -46,7 +42,6 @@ body {
   text-decoration: underline;
 }
 
-/* 로그인 박스 */
 .login-box {
   display: flex;
   flex-direction: column;
@@ -61,7 +56,6 @@ body {
   font-weight: 600;
 }
 
-/* 소셜 로그인 버튼 공통 */
 .login-button {
   width: 479px;
   height: 70px;
@@ -79,7 +73,6 @@ body {
   margin: 8px 0;
 }
 
-/* 각 플랫폼별 색상 */
 .kakao {
   background-color: #fee500;
   color: #000;
@@ -96,9 +89,8 @@ body {
   border: 1px solid #ddd;
 }
 
-/* 구글 로그인 이미지 스타일 */
 .google-img-button {
-  all: unset; /* 버튼 기본 스타일 제거 */
+  all: unset; 
   cursor: pointer;
 }
 
@@ -111,7 +103,6 @@ body {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* FAQ 섹션 */
 .faq-container {
   padding: 30px 40px;
   background-color: transparent;
@@ -138,7 +129,6 @@ body {
   transition: background-color 0.2s ease;
 }
 
-/* ✅ 마우스를 질문/답변 어디에 올려도 전체 박스 색상 변화 */
 .faq-item:hover {
   background-color: #e5e7ef;
 }
