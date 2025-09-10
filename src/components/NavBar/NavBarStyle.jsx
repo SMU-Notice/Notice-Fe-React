@@ -30,15 +30,15 @@ const NavButton = styled.button`
 
 const NavibarTitle = styled.div`
   font-weight: bold;
-  font-size: 35px;
+  font-size: 28px;
   font-family: 'Nunito', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 `
 
 const SmuIcon = styled.img`
   width: 24px;
   height: 24px;
-  margin-right: 8px;
-  transform: translateY(1px);
+  margin-right: 10px;
+  transform: translateY(3px);
 `
 
 

@@ -8,7 +8,7 @@ const BookmarkWrapper = styled.div`
 `;
 
 const BookmarkButton = styled(BookMarkIcon)`
-  fill: ${({ isBookmarked }) => (isBookmarked ? 'red' : '#ccc')};
+  fill: ${({ isBookmarked }) => (isBookmarked ? '	#DC143C' : '#ccc')};
   width: 17px;
   height: 17px;
   margin-right: 2px;
