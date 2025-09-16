@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import BookMarkIcon from '../../assets/bookmark.svg?react';
+import pictureIcon from "../../assets/pictureicon.svg?react";
 
 const Container = styled.div`
   max-width: 70%;
@@ -76,7 +76,7 @@ const ReferenceIcon = styled.img`
 
 const NoticeContent = styled.p`
   font-size: 1rem;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   margin-bottom: 1rem;
   min-height: 100px;
   white-space: pre-line;
@@ -85,6 +85,7 @@ const NoticeContent = styled.p`
 
 const NoticePicture = styled.p`
   font-size: 1rem;
+  margin-top: 0.5rem;
   margin-bottom: 1rem;
   white-space: pre-line;
   line-height: 25px;
@@ -130,5 +131,18 @@ const NextNoticeTitle = styled.div`
   }
 `
 
+const TextBox = styled.div`
+  color: #0c114c;
+  font-weight: bold;
+`
 
-export {Container, Title, VerticalDivider, Site, Line, SubLine, NoticeContainer, NoticeTitle, DateAndViews, CalendarIcon, ViewIcon, NoticeContent, NoticePicture, NoticeOrigin, NextNotice, BeforeNotice, NextNoticeTitle, BeforeNoticeTitle, ReferenceIcon};
+const PictureIcon = styled(pictureIcon)`
+  width: 18px;
+  height: 18px;
+  margin-right: 2px;
+  fill:rgb(94, 102, 143);
+  transform: translateY(2px);
+  filter: blur(0.4px);
+`;
+
+export {Container, Title, VerticalDivider, Site, Line, SubLine, NoticeContainer, NoticeTitle, DateAndViews, CalendarIcon, ViewIcon, NoticeContent, NoticePicture, NoticeOrigin, NextNotice, BeforeNotice, NextNoticeTitle, BeforeNoticeTitle, ReferenceIcon, TextBox, PictureIcon};

@@ -98,7 +98,7 @@ const Expanded = styled.div`
 const Photo = styled.img`
   display: block;
   width: 100%;
-  height: 140px;
+  height: 180px;
   object-fit: cover;
 `;
 

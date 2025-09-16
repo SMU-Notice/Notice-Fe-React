@@ -1,5 +1,8 @@
+import H1 from "../assets/H1.jpg"
+
+
 const BUILDING_PHOTOS = {
-    H: "https://picsum.photos/seed/H/640/360",
+    H: H1,
     L: "https://picsum.photos/seed/L/640/360",
     B: "https://picsum.photos/seed/B/640/360",
   };
