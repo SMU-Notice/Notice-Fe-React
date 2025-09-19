@@ -8,7 +8,8 @@ const OverlayBookMarkIcon = styled(BaseBookMarkIcon)`
   width: 13px;
   height: 13px;
   margin-left: 4px;
-  margin-top: 1px; 
+  margin-top: 1px;
+  transform: translateY(-0.3px);
 `;
 
 const OverlayCalendarIcon = styled(BaseCalendarIcon)`
