@@ -1,15 +1,15 @@
-/* 오버레이 */
-.pop-overlay {
+import styled from "styled-components";
+
+export const Overlay = styled.div`
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.45);
   display: grid;
   place-items: center;
   z-index: 9999;
-}
+`;
 
-/* 카드(남색 배경) */
-.pop-card {
+export const Card = styled.div`
   position: relative;
   background: #0c114c;
   color: #fff;
@@ -22,10 +22,13 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
 
-/* 닫기(X) */
-.pop-close {
+  @media (max-width: 360px) {
+    padding: 22px;
+  }
+`;
+
+export const CloseBtn = styled.button`
   position: absolute;
   top: 10px;
   right: 12px;
@@ -36,43 +39,53 @@
   line-height: 1;
   cursor: pointer;
   opacity: 0.9;
-}
-.pop-close:hover {
-  opacity: 1;
-  transform: scale(1.05);
-}
 
-/* 버스 이미지 */
-.pop-bus {
+  &:hover {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+`;
+
+export const BusImg = styled.img`
   width: 96px;
   height: 96px;
   margin-bottom: 18px;
-}
 
-/* 텍스트 */
-.pop-text {
+  @media (max-width: 360px) {
+    width: 84px;
+    height: 84px;
+  }
+`;
+
+export const TextBox = styled.div`
   text-align: center;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, "Apple SD Gothic Neo",
+    "Noto Sans KR", sans-serif;
   font-weight: 700;
-}
-.pop-underline {
+`;
+
+export const Underline = styled.div`
   font-size: 22px;
   line-height: 1.25;
   text-decoration: underline;
   text-underline-offset: 4px;
   white-space: nowrap;
-}
 
-/* 작은 화면 대응 */
-@media (max-width: 360px) {
-  .pop-card {
-    padding: 22px;
-  }
-  .pop-bus {
-    width: 84px;
-    height: 84px;
-  }
-  .pop-underline {
+  @media (max-width: 360px) {
     font-size: 20px;
   }
-}
+`;
+
+export const Content = styled.div`
+  margin-top: 12px;
+  width: 100%;
+
+  ul {
+    margin: 0;
+    padding-left: 1.1em;
+  }
+
+  li + li {
+    margin-top: 6px;
+  }
+`;

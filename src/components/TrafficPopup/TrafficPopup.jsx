@@ -1,6 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import busIcon from "../../assets/bus.svg";
-import "./TrafficPopup.css";
+
+import {
+  Overlay,
+  Card,
+  CloseBtn,
+  BusImg,
+  TextBox,
+  Underline,
+  Content,
+} from "./TrafficPopupStyle";
 
 function getTodayText() {
   const today = new Date();
@@ -39,6 +48,7 @@ export default function TrafficPopup({
     []
   );
 
+  // 오픈 시 body 스크롤 잠금 + 포커스 이동
   useEffect(() => {
     if (!open) return;
     lastActiveElRef.current = document.activeElement;
@@ -53,6 +63,7 @@ export default function TrafficPopup({
     };
   }, [open]);
 
+  // ESC로 닫기
   useEffect(() => {
     if (!open) return;
     const onKey = (e) => e.key === "Escape" && onClose && onClose();
@@ -60,10 +71,11 @@ export default function TrafficPopup({
     return () => window.removeEventListener("keydown", onKey);
   }, [open, onClose]);
 
+  // 데이터 로딩
   useEffect(() => {
     if (!open) return;
     const controller = new AbortController();
-    const signal = controller.signal;
+    const { signal } = controller;
 
     const fetchEvents = async () => {
       try {
@@ -116,7 +128,6 @@ export default function TrafficPopup({
                 `${ev.protestDate} ${ev.startTime} ~ ${ev.endTime} | ${ev.location}`
             )
             .join("\n");
-
           setMessage(msg);
         } else {
           setEvents([]);
@@ -138,26 +149,23 @@ export default function TrafficPopup({
   if (!open) return null;
 
   return (
-    <div className="pop-overlay" onClick={onClose}>
-      <div
-        className="pop-card"
+    <Overlay onClick={onClose}>
+      <Card
         role="dialog"
         aria-modal="true"
         aria-labelledby="traffic-title"
         aria-describedby="traffic-body"
         onClick={(e) => e.stopPropagation()}
       >
-        <button className="pop-close" onClick={onClose} aria-label="닫기" ref={closeBtnRef}>
+        <CloseBtn onClick={onClose} aria-label="닫기" ref={closeBtnRef}>
           ×
-        </button>
-        <img src={busIcon} alt="버스 아이콘" className="pop-bus" />
-        <div className="pop-text">
-          <div className="pop-underline" id="traffic-title">
-            {dateText}
-          </div>
-          <div className="pop-underline">{caption}</div>
-        </div>
-        <div className="pop-content" id="traffic-body" aria-live="polite">
+        </CloseBtn>
+        <BusImg src={busIcon} alt="버스 아이콘" />
+        <TextBox>
+          <Underline id="traffic-title">{dateText}</Underline>
+          <Underline>{caption}</Underline>
+        </TextBox>
+        <Content id="traffic-body" aria-live="polite">
           {loading && <p>불러오는 중...</p>}
           {!loading && events.length > 0 && (
             <ul>
@@ -172,8 +180,8 @@ export default function TrafficPopup({
             </ul>
           )}
           {!loading && events.length === 0 && <p>{message}</p>}
-        </div>
-      </div>
-    </div>
+        </Content>
+      </Card>
+    </Overlay>
   );
 }
