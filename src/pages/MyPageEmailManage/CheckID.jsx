@@ -7,7 +7,7 @@ export const CheckID = () => {
   
     const textStyle = {
       fontFamily: "'Cafe24Ssurround', sans-serif",  
-      fontSize: '16px',                   
+      fontSize: '25px',                   
       color: '#333',                      
     };
   

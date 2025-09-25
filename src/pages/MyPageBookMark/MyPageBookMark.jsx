@@ -1,271 +1,366 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import "./BookMarkPage.css";
+import SidebarNav from "../../components/SideBarNav/SideBarNav";
 import folderIcon from "../../assets/folder.svg";
 import folderplus from "../../assets/folderplus.svg";
+
+import {
+  Wrap,
+  Main,
+  PageTitle,
+  Error,
+  Loader,
+  Grid,
+  Card,
+  Icon,
+  Label,
+  HoverMenu,
+  MenuBtn,
+  Backdrop,
+  FolderCapFloat,
+  FolderPanel,
+  FolderHeader,
+  PanelBody,
+  PostsCard,
+  BodyLoader,
+  PostItem,
+  Dot,
+  PostTitle,
+  Meta,
+} from "./MyPageBookMarkStyle";
+
+const CREATE_CARD_ID = "__create__";
+
+const formatKST = (dateLike) => {
+  try {
+    if (!dateLike) return "";
+    const dt = typeof dateLike === "string" ? new Date(dateLike) : dateLike;
+    return new Intl.DateTimeFormat("ko-KR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+      timeZone: "Asia/Seoul",
+    })
+      .format(dt)
+      .replaceAll(". ", "-")
+      .replaceAll(".", "")
+      .replace("-", "-")
+      .trim();
+  } catch {
+    return "";
+  }
+};
 
 const MyPageBookMark = () => {
   const navigate = useNavigate();
 
   const [folders, setFolders] = useState([]);
-  const [openFolderIndex, setOpenFolderIndex] = useState(null);
-  const [folderContents, setFolderContents] = useState({}); // { [folderId]: Post[] }
+  const [openFolderId, setOpenFolderId] = useState(null);
+  const [folderContents, setFolderContents] = useState({});
   const [hoveredFolderId, setHoveredFolderId] = useState(null);
+  const [loadingFolders, setLoadingFolders] = useState(false);
+  const [loadingFolderId, setLoadingFolderId] = useState(null);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const token =
     localStorage.getItem("kakaoToken") ||
     localStorage.getItem("naverToken") ||
     localStorage.getItem("googleToken");
 
-  const authHeaders = token ? { Authorization: `Bearer ${token}` } : {};
+  const authHeaders = useMemo(
+    () => (token ? { Authorization: `Bearer ${token}` } : {}),
+    [token]
+  );
 
-  const fetchFolders = async () => {
-    try {
-      const res = await fetch("https://test.smu-notice.kr/api/mypage/bookmark", {
-        headers: authHeaders,
-      });
-      const result = await res.json();
-      if (result.success && Array.isArray(result.data)) {
-        setFolders(result.data);
-      }
-    } catch (err) {
-      console.error("폴더 목록 조회 실패:", err);
-    }
-  };
-
-  const createFolder = async () => {
-    try {
-      const res = await fetch("https://test.smu-notice.kr/api/mypage/bookmark", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...authHeaders,
-        },
-      });
-      const result = await res.json();
-      if (result.success && result.data) {
-        setFolders((prev) => [...prev, result.data]);
-      }
-    } catch (err) {
-      console.error("폴더 생성 실패:", err);
-    }
-  };
-
-  const deleteFolder = async (folderId) => {
-    const confirmed = window.confirm("이 폴더를 삭제하시겠습니까?");
-    if (!confirmed) return;
-    try {
-      const res = await fetch(
-        `https://test.smu-notice.kr/api/mypage/bookmark/${folderId}`,
-        { method: "DELETE", headers: authHeaders }
-      );
-      const result = await res.json();
-      if (result.success) {
-        setFolders((prev) => prev.filter((f) => f.id !== folderId));
-        setFolderContents((prev) => {
-          const copy = { ...prev };
-          delete copy[folderId];
-          return copy;
+  const apiFetch = useCallback(
+    async (url, options = {}) => {
+      const controller = new AbortController();
+      const { signal } = controller;
+      const timeout = setTimeout(() => controller.abort(), 15_000);
+      try {
+        const res = await fetch(url, {
+          ...options,
+          headers: { ...(options.headers || {}), ...authHeaders },
+          signal,
         });
-        if (openFolderIndex !== null && folders[openFolderIndex]?.id === folderId) {
-          setOpenFolderIndex(null);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        try {
+          return await res.json();
+        } catch {
+          return null;
         }
+      } finally {
+        clearTimeout(timeout);
       }
-    } catch (err) {
-      console.error("폴더 삭제 실패:", err);
-    }
-  };
+    },
+    [authHeaders]
+  );
 
-  const renameFolder = async (folderId, currentName) => {
-    const newName = prompt("새 이름을 입력하세요:", currentName);
-    if (!newName || newName.trim() === "" || newName === currentName || newName.trim() === "+") {
-      return;
-    }
-    try {
-      const res = await fetch(
-        `https://test.smu-notice.kr/api/mypage/bookmark/${folderId}?newName=${encodeURIComponent(
-          newName.trim()
-        )}`,
-        { method: "PATCH", headers: authHeaders }
-      );
-      const result = await res.json();
-      if (result.success && result.data) {
-        setFolders((prev) =>
-          prev.map((f) => (f.id === folderId ? { ...f, name: result.data.name } : f))
-        );
-      }
-    } catch (err) {
-      console.error("이름 변경 실패:", err);
-    }
-  };
-
-  // 응답 구조: { name: string, posts: Post[] }  (없으면 posts는 빈 배열)
-  const fetchFolderPosts = async (folderId) => {
-    try {
-      const res = await fetch(
-        `https://test.smu-notice.kr/api/mypage/bookmark/${folderId}/posts`,
-        { headers: authHeaders }
-      );
-      const result = await res.json();
-
-      if (result.success && result.data && Array.isArray(result.data.posts)) {
-        return result.data.posts; // posts 배열만 반환
-      } else {
-        console.warn("게시글 데이터가 배열이 아님:", result.data);
-        return [];
-      }
-    } catch (err) {
-      console.error("게시글 조회 실패:", err);
-      return [];
-    }
-  };
-
-  const handleFolderClick = async (idx) => {
-    const selectedFolder = folders[idx];
-    if (!selectedFolder) return;
-
-    if (openFolderIndex === idx) {
-      setOpenFolderIndex(null);
-      return;
-    }
-
-    setOpenFolderIndex(idx);
-
-    if (!folderContents[selectedFolder.id]) {
-      const posts = await fetchFolderPosts(selectedFolder.id);
-      // id 기준 중복 제거
-      const uniquePosts = posts.filter(
-        (p, i, arr) => arr.findIndex((x) => x.id === p.id) === i
-      );
-      setFolderContents((prev) => ({
-        ...prev,
-        [selectedFolder.id]: uniquePosts,
-      }));
-    }
-  };
-
-  useEffect(() => {
+  /* api: folders */
+  const fetchFolders = useCallback(async () => {
     if (!token) return;
-    fetchFolders();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]);
+    setLoadingFolders(true);
+    setErrorMsg("");
+    try {
+      const result = await apiFetch("https://test.smu-notice.kr/api/mypage/bookmark");
+      if (result?.success && Array.isArray(result.data)) setFolders(result.data);
+      else throw new Error("invalid folder payload");
+    } catch (e) {
+      console.error(e);
+      setErrorMsg("폴더 목록을 불러오는 중 문제가 발생했어요.");
+    } finally {
+      setLoadingFolders(false);
+    }
+  }, [token, apiFetch]);
 
+  const createFolder = useCallback(async () => {
+    try {
+      const result = await apiFetch("https://test.smu-notice.kr/api/mypage/bookmark", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (result?.success && result.data) setFolders((prev) => [...prev, result.data]);
+      else throw new Error("invalid create payload");
+    } catch (e) {
+      console.error(e);
+      setErrorMsg("폴더를 생성하지 못했습니다.");
+    }
+  }, [apiFetch]);
+
+  const deleteFolder = useCallback(
+    async (folderId) => {
+      if (!window.confirm("이 폴더를 삭제하시겠습니까?")) return;
+      try {
+        const result = await apiFetch(
+          `https://test.smu-notice.kr/api/mypage/bookmark/${folderId}`,
+          { method: "DELETE" }
+        );
+        if (result?.success) {
+          setFolders((prev) => prev.filter((f) => f.id !== folderId));
+          setFolderContents((prev) => {
+            const c = { ...prev };
+            delete c[folderId];
+            return c;
+          });
+          if (openFolderId === folderId) setOpenFolderId(null);
+        } else throw new Error("invalid delete payload");
+      } catch (e) {
+        console.error(e);
+        setErrorMsg("폴더를 삭제하지 못했습니다.");
+      }
+    },
+    [apiFetch, openFolderId]
+  );
+
+  const renameFolder = useCallback(
+    async (folderId, currentName) => {
+      const newName = prompt("새 이름을 입력하세요:", currentName);
+      if (!newName || newName.trim() === "" || newName === currentName || newName.trim() === "+") return;
+      try {
+        const result = await apiFetch(
+          `https://test.smu-notice.kr/api/mypage/bookmark/${folderId}?newName=${encodeURIComponent(
+            newName.trim()
+          )}`,
+          { method: "PATCH" }
+        );
+        if (result?.success && result.data) {
+          setFolders((prev) => prev.map((f) => (f.id === folderId ? { ...f, name: result.data.name } : f)));
+        } else throw new Error("invalid rename payload");
+      } catch (e) {
+        console.error(e);
+        setErrorMsg("폴더 이름을 변경하지 못했습니다.");
+      }
+    },
+    [apiFetch]
+  );
+
+  /* api: posts in folder */
+  const fetchFolderPosts = useCallback(
+    async (folderId) => {
+      setLoadingFolderId(folderId);
+      try {
+        const result = await apiFetch(
+          `https://test.smu-notice.kr/api/mypage/bookmark/${folderId}/posts`
+        );
+        const posts = result?.success && Array.isArray(result?.data?.posts) ? result.data.posts : [];
+        setFolderContents((prev) => ({
+          ...prev,
+          [folderId]: posts.filter((p, i, arr) => arr.findIndex((x) => x.id === p.id) === i),
+        }));
+      } catch (e) {
+        console.error(e);
+        setErrorMsg("게시글을 불러오지 못했습니다.");
+        setFolderContents((prev) => ({ ...prev, [folderId]: [] }));
+      } finally {
+        setLoadingFolderId(null);
+      }
+    },
+    [apiFetch]
+  );
+
+  /* actions */
+  const handleFolderClick = useCallback(
+    async (folderId) => {
+      if (openFolderId === folderId) return;
+      setOpenFolderId(folderId);
+      if (!folderContents[folderId]) await fetchFolderPosts(folderId);
+    },
+    [openFolderId, folderContents, fetchFolderPosts]
+  );
+
+  /* initial load */
+  useEffect(() => {
+    fetchFolders();
+  }, [fetchFolders]);
+
+  /* Close on ESC */
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === "Escape") setOpenFolderId(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  // Sidebar handlers
   const goToEmailManage = () => navigate("/MyPageEmailManage");
   const goToProfileEdit = () => navigate("/MyPageProfileEdit");
 
   if (!token) {
     return (
-      <div className="bookmark-container">
-        <div className="main">
-          <h1 className="title">북마크 관리</h1>
+      <Wrap>
+        <Main>
+          <PageTitle>북마크 관리</PageTitle>
           <p>로그인이 필요합니다.</p>
-        </div>
-      </div>
+        </Main>
+      </Wrap>
     );
   }
 
+  const opened = openFolderId ? folders.find((f) => f.id === openFolderId) : null;
+
   return (
-    <div className="bookmark-container">
-      <aside className="sidebar">
-        <nav>
-          <div className="sidebar-buttons">
-            <button type="button">북마크</button>
-            <button type="button" onClick={goToEmailManage}>
-              메일<br />관리
-            </button>
-            <button type="button" onClick={goToProfileEdit}>
-              회원<br />정보
-            </button>
-          </div>
-        </nav>
-      </aside>
+    <Wrap>
+      <SidebarNav
+        width={100}
+        headerHeight="10vh"
+        onGoBookmark={() => {}}
+        onGoEmail={goToEmailManage}
+        onGoProfile={goToProfileEdit}
+      />
 
-      <div className="main">
-        <h1 className="title">북마크 관리</h1>
+      <Main>
+        <PageTitle>북마크 관리</PageTitle>
+        {errorMsg && <Error role="alert">{errorMsg}</Error>}
 
-        <div className="folder-grid">
-          {[...folders, { id: "new", name: "+" }].map((folder, idx) => {
-            const isPlus = folder.name === "+";
-            const isOpened = openFolderIndex === idx;
-            const isHidden = openFolderIndex !== null && !isOpened;
+        {loadingFolders ? (
+          <Loader role="status" aria-live="polite">폴더를 불러오는 중…</Loader>
+        ) : (
+          <>
+            {opened && (
+              <>
+                <Backdrop onClick={() => setOpenFolderId(null)} aria-label="패널 닫기" />
 
-            return (
-              <div
-                key={isPlus ? "new-folder-card" : `folder-${folder.id}`} // 유니크 키 보장
-                className={`folder ${isPlus ? "new-folder" : ""} ${isHidden ? "hidden" : ""} ${
-                  isOpened ? "fullscreen" : ""
-                }`}
-                onClick={(e) => {
-                  if (isPlus) {
-                    e.stopPropagation();
-                    createFolder();
-                  } else {
-                    handleFolderClick(idx);
-                  }
-                }}
-                onMouseEnter={() => !isPlus && setHoveredFolderId(folder.id)}
-                onMouseLeave={() => !isPlus && setHoveredFolderId(null)}
-                style={
-                  isOpened && !isPlus
-                    ? {
-                        backgroundImage: `url(${folderIcon})`,
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                        backgroundRepeat: "no-repeat",
-                      }
-                    : {}
-                }
-              >
-                {!isOpened ? (
-                  <>
-                    <img
-                      src={isPlus ? folderplus : folderIcon}
-                      alt="폴더 아이콘"
-                      className="folder-icon"
-                    />
-                    <div className="folder-label">
-                      {isPlus ? "" : folder.name}
-                      {hoveredFolderId === folder.id && !isPlus && (
-                        <div className="hover-menu" onClick={(e) => e.stopPropagation()}>
-                          <span onClick={() => renameFolder(folder.id, folder.name)}>
-                            이름 바꾸기<br />
-                          </span>
-                          <span onClick={() => deleteFolder(folder.id)}>폴더 삭제</span>
-                        </div>
-                      )}
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="folder-label fullscreen-label">{folder.name}</div>
-                    <div className="file-list">
-                      {(folderContents[folder.id]?.length ?? 0) > 0 ? (
-                        folderContents[folder.id].map((file, i) => (
-                          <div
-                            key={`${folder.id}-${file.id}-${i}`} // 폴더id+파일id(+index)로 유니크 보장
-                            className="file-item"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              navigate(`/board/${file.id}`);
-                            }}
-                            style={{ cursor: "pointer" }}
-                            title={file.title}
+                <FolderCapFloat aria-hidden="true">
+                  <FolderHeader>
+                    <span aria-hidden>★</span>
+                    <strong>{opened.name}</strong>
+                    <span aria-hidden>★</span>
+                  </FolderHeader>
+                </FolderCapFloat>
+
+                <FolderPanel
+                  onClick={(e) => e.stopPropagation()}
+                  role="dialog"
+                  aria-modal="true"
+                  aria-label={`${opened.name} 폴더 내용`}
+                >
+                  <PanelBody>
+                    {loadingFolderId === opened.id ? (
+                      <BodyLoader role="status" aria-live="polite">게시글을 불러오는 중…</BodyLoader>
+                    ) : (folderContents[opened.id]?.length ?? 0) > 0 ? (
+                      <PostsCard>
+                        <ul>
+                          {folderContents[opened.id].map((file) => (
+                            <PostItem
+                              key={`${opened.id}-${file.id}`}
+                              onClick={() => navigate(`/board/${file.id}`)}
+                              title={file.title}
+                              role="button"
+                              tabIndex={0}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                  e.preventDefault();
+                                  navigate(`/board/${file.id}`);
+                                }
+                              }}
+                            >
+                              <Dot aria-hidden>•</Dot>
+                              <PostTitle>{file.title}</PostTitle>
+                              {file.createdAt && <Meta>{formatKST(file.createdAt)}</Meta>}
+                            </PostItem>
+                          ))}
+                        </ul>
+                      </PostsCard>
+                    ) : (
+                      <PostsCard empty>게시글이 없습니다.</PostsCard>
+                    )}
+                  </PanelBody>
+                </FolderPanel>
+              </>
+            )}
+
+            {!opened && (
+              <Grid>
+                {[...folders, { id: CREATE_CARD_ID, name: "+" }].map((folder) => {
+                  const isCreate = folder.id === CREATE_CARD_ID;
+                  return (
+                    <Card
+                      key={isCreate ? "new" : `f-${folder.id}`}
+                      $isPlus={isCreate}
+                      onClick={() => (isCreate ? createFolder() : handleFolderClick(folder.id))}
+                      onMouseEnter={() => !isCreate && setHoveredFolderId(folder.id)}
+                      onMouseLeave={() => !isCreate && setHoveredFolderId(null)}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={isCreate ? "폴더 생성" : `${folder.name} 열기`}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          isCreate ? createFolder() : handleFolderClick(folder.id);
+                        }
+                      }}
+                    >
+                      <Icon src={isCreate ? folderplus : folderIcon} alt="폴더" />
+                      <Label>
+                        {isCreate ? "" : folder.name}
+                        {!isCreate && hoveredFolderId === folder.id && (
+                          <HoverMenu
+                            onClick={(e) => e.stopPropagation()}
+                            role="menu"
+                            aria-label="폴더 메뉴"
                           >
-                            📄 {file.title}
-                          </div>
-                        ))
-                      ) : (
-                        <div>게시글이 없습니다.</div>
-                      )}
-                    </div>
-                  </>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </div>
+                            <MenuBtn type="button" onClick={() => renameFolder(folder.id, folder.name)}>
+                              이름 바꾸기
+                            </MenuBtn>
+                            <MenuBtn type="button" onClick={() => deleteFolder(folder.id)}>
+                              폴더 삭제
+                            </MenuBtn>
+                          </HoverMenu>
+                        )}
+                      </Label>
+                    </Card>
+                  );
+                })}
+              </Grid>
+            )}
+          </>
+        )}
+      </Main>
+    </Wrap>
   );
 };
 

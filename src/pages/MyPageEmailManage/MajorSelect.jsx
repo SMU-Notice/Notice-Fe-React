@@ -252,7 +252,7 @@ const MajorSelect = () => {
 
   return (
     <>
-      <h1 style={{ marginBottom: '0px', fontSize: '16px' }}>학과 수정하기</h1>
+      <h1 style={{ marginBottom: '0px', fontSize: '25px' }}>학과 수정하기</h1>
 
       <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '12px' }}>
         <select value={selectedCollege} onChange={handleCollegeChange}>

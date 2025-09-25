@@ -24,7 +24,7 @@ const Title = styled.h1`
   font-size: 35px;
   font-weight: bold;
   margin-bottom: 20px;
-  margin-top: 25px;
+  margin-top: 8vh;
   text-align: center;
   color: #09144D;
   font-family: 'Cafe24Ssurround', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
